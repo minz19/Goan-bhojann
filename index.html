@@ -1,1 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Goa Hidden 🌴 — Insider Guide</title>
+<meta name="description" content="Goa's secret insider guide — hidden restaurants, budget stays, real tips."/>
+<meta name="theme-color" content="#00B4D8"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#00B4D8;--navy:#03045E;--teal:#0077B6;--green:#25D366;--orange:#FF6B35;--cream:#F0F9FF;--text:#1A1A2E;--muted:#6B7280;--light:#E0F4FF;--shadow:0 8px 32px rgba(0,0,0,0.12);--radius:20px;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}button{font-family:'DM Sans',sans-serif;cursor:pointer;}
+.screen{display:none;min-height:100vh;animation:fadeIn 0.3s ease;padding-bottom:80px;}
+.screen.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+/* HERO */
+.hero{
+  padding:52px 20px 36px;
+  position:relative;overflow:hidden;
+  background:#03045E;
+}
+.hero-bg-img{
+  position:absolute;inset:0;z-index:0;
+  transform:scale(1.06);
+  overflow:hidden;
+}
+.hero-bg-img img{
+  width:100%;height:100%;object-fit:cover;
+  filter:blur(2px) brightness(0.42) saturate(1.5);
+  display:block;
+}
+.hero-bg-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.5) 100%);
+}
+.hero>*{position:relative;z-index:2;}
+.hero::after{content:'🌴';position:absolute;right:-10px;bottom:-20px;font-size:140px;opacity:0.08;transform:rotate(-15deg);}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(255,255,255,0.9);letter-spacing:1.5px;text-transform:uppercase;}
+.owner-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:8px 14px;font-size:12px;color:#fff;display:flex;align-items:center;gap:5px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(34px,8vw,56px);color:#fff;line-height:1.05;margin-bottom:8px;}
+.hero h1 em{color:#90E0EF;font-style:normal;}
+.hero p{color:rgba(255,255,255,0.7);font-size:14px;line-height:1.6;margin-bottom:28px;max-width:300px;}
+.hero-stats{display:flex;background:rgba(255,255,255,0.1);border-radius:16px;overflow:hidden;}
+.hero-stat{flex:1;padding:12px 8px;text-align:center;border-right:1px solid rgba(255,255,255,0.1);}
+.hero-stat:last-child{border:none;}
+.hero-stat .num{font-family:'Playfair Display',serif;font-size:20px;color:#fff;font-weight:700;}
+.hero-stat .lbl{font-size:10px;color:rgba(255,255,255,0.55);margin-top:2px;}
+/* SEARCH */
+.search-wrap{padding:16px 20px 0;position:sticky;top:0;z-index:20;background:var(--cream);}
+.search-inner{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid transparent;border-radius:16px;padding:13px 16px;box-shadow:0 4px 20px rgba(0,180,216,0.1);transition:border-color 0.2s;}
+.search-inner:focus-within{border-color:var(--blue);}
+.search-inner input{flex:1;border:none;outline:none;font-size:15px;color:var(--text);background:transparent;}
+.search-inner input::placeholder{color:#C0C0C0;}
+/* TABS */
+.cat-tabs{display:flex;padding:16px 20px 0;}
+.cat-tab{flex:1;padding:11px 8px;border:none;background:#fff;color:var(--muted);font-size:12px;font-weight:500;border-bottom:2px solid #E8E8E8;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.cat-tab .ci{font-size:20px;}
+.cat-tab.active{color:var(--blue);border-bottom-color:var(--blue);background:linear-gradient(to bottom,#fff,#F0F9FF);}
+/* FILTERS */
+.filters{padding:12px 20px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;}
+.filters::-webkit-scrollbar{display:none;}
+.chip{flex-shrink:0;padding:8px 16px;border-radius:20px;border:1.5px solid #E0EEF5;background:#fff;color:#666;font-size:12px;font-weight:500;transition:all 0.2s;white-space:nowrap;}
+.chip.active{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(0,180,216,0.35);}
+/* SECTION */
+.sec-head{padding:8px 20px 14px;display:flex;justify-content:space-between;align-items:center;}
+.sec-head h2{font-family:'Playfair Display',serif;font-size:19px;color:var(--text);}
+.sec-head span{font-size:12px;color:var(--muted);}
+/* FEATURED CARDS WITH REAL PHOTOS */
+.feat-scroll{display:flex;gap:14px;padding:0 20px 4px;overflow-x:auto;scrollbar-width:none;margin-bottom:6px;}
+.feat-scroll::-webkit-scrollbar{display:none;}
+.feat-card{flex-shrink:0;width:240px;border-radius:var(--radius);background:#fff;box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:transform 0.2s;}
+.feat-card:active{transform:scale(0.97);}
+.feat-img{height:160px;position:relative;overflow:hidden;}
+.feat-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s;}
+.feat-card:hover .feat-img img{transform:scale(1.05);}
+.feat-img .grad{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,0.72));}
+.feat-img .fi-info{position:absolute;bottom:10px;left:12px;right:12px;}
+.feat-img .fi-info h3{font-family:'Playfair Display',serif;font-size:16px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.5);}
+.feat-img .fi-meta{font-size:11px;color:rgba(255,255,255,0.85);margin-top:2px;}
+.feat-img .type-badge{position:absolute;top:10px;left:10px;background:rgba(255,255,255,0.92);border-radius:8px;padding:3px 8px;font-size:10px;font-weight:600;}
+.feat-body{padding:12px;}
+.feat-tip{font-size:12px;color:var(--muted);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.feat-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+/* LIST CARDS WITH REAL PHOTOS */
+.cards-list{padding:0 20px;display:flex;flex-direction:column;gap:12px;}
+.list-card{background:#fff;border-radius:var(--radius);box-shadow:0 4px 16px rgba(0,0,0,0.07);display:flex;overflow:hidden;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;}
+.list-card:active{transform:scale(0.98);}
+.lc-img{width:110px;min-height:110px;position:relative;flex-shrink:0;overflow:hidden;}
+.lc-img img{width:100%;height:100%;object-fit:cover;}
+.lc-img .lc-type{position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,0.65);color:#fff;font-size:9px;font-weight:600;padding:2px 6px;border-radius:6px;}
+.lc-body{flex:1;padding:13px 12px 13px 10px;}
+.lc-body h3{font-size:15px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.lc-meta{font-size:11px;color:var(--muted);margin-bottom:7px;}
+.tags{display:flex;gap:5px;flex-wrap:wrap;}
+.tag{font-size:10px;padding:2px 8px;border-radius:8px;font-weight:500;}
+.tag-food{background:#FFF0EB;color:var(--orange);}
+.tag-stay{background:#E8F8FF;color:var(--teal);}
+.lc-actions{display:flex;flex-direction:column;justify-content:center;gap:6px;padding:10px 12px 10px 0;}
+/* BADGES */
+.rating{display:inline-flex;align-items:center;gap:3px;background:#FFFBEB;color:#F59E0B;font-size:11px;font-weight:600;padding:3px 8px;border-radius:8px;}
+.price-badge{display:inline-flex;align-items:center;background:#E8F8FF;color:var(--teal);font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px;}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;align-items:flex-end;justify-content:center;backdrop-filter:blur(6px);}
+.modal-bg.open{display:flex;animation:fadeIn 0.25s ease;}
+.modal{background:#fff;border-radius:28px 28px 0 0;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;}
+.modal-handle{width:36px;height:4px;background:#E8E8E8;border-radius:2px;margin:14px auto 0;}
+.meh{height:220px;position:relative;overflow:hidden;}
+.meh img{width:100%;height:100%;object-fit:cover;}
+.meh .grad{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.55));}
+.meh .meh-info{position:absolute;bottom:16px;left:20px;right:20px;}
+.meh .meh-info h2{font-family:'Playfair Display',serif;font-size:24px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.4);}
+.mc{padding:16px 20px 20px;}
+.mb{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.ic{background:#F8FBFF;border-radius:16px;padding:14px 16px;margin-bottom:12px;}
+.ic .icl{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#AAA;font-weight:600;margin-bottom:5px;}
+.ic .icv{font-size:14px;color:var(--text);line-height:1.55;}
+.cc{background:linear-gradient(135deg,#E8FFFB,#D1FAF2);border:2px dashed #0A9396;border-radius:16px;padding:18px;text-align:center;margin-bottom:16px;}
+.cc .ccl{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#0A9396;font-weight:600;margin-bottom:8px;}
+.cc .cco{font-size:13px;color:#1A7A6E;margin-bottom:14px;line-height:1.4;}
+.cd{font-family:monospace;font-size:24px;font-weight:800;letter-spacing:5px;color:#0A9396;background:rgba(10,147,150,0.1);border-radius:10px;padding:12px;margin-bottom:12px;}
+.mbtns{display:flex;gap:10px;}
+.mbtns button{flex:1;padding:14px;border-radius:14px;font-size:14px;font-weight:600;border:none;}
+.btn-blue{background:var(--blue);color:#fff;}
+.btn-outline{background:#F5F5F5;color:#555;}
+/* WA FLOAT */
+.wa-float{position:fixed;bottom:20px;right:16px;width:52px;height:52px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 20px rgba(37,211,102,0.5);z-index:49;animation:pulse 2.5s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.5);}50%{box-shadow:0 8px 32px rgba(37,211,102,0.75);}}
+/* TRUST */
+.tbg{background:linear-gradient(160deg,#03045E,#0077B6);padding:52px 20px 32px;text-align:center;}
+.tbg h1{font-family:'Playfair Display',serif;font-size:26px;color:#fff;margin:12px 0 8px;}
+.tbg p{font-size:14px;color:rgba(255,255,255,0.65);line-height:1.6;max-width:320px;margin:0 auto;}
+.pc{padding:20px;}
+.sb{background:#fff;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.sb::before{content:'❝';position:absolute;top:-8px;right:12px;font-size:72px;color:var(--blue);opacity:0.07;font-family:serif;}
+.sb blockquote{font-size:15px;color:#333;line-height:1.8;font-style:italic;margin-bottom:14px;}
+.fr{display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid #F0F0F0;}
+.fav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--navy));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.db{background:#fff;border-radius:16px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,0.06);}
+.db .di{font-size:26px;margin-bottom:8px;}
+.db h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px;}
+.db p{font-size:11px;color:var(--muted);line-height:1.5;}
+.ctb{background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px;}
+.ctb .ch{display:grid;grid-template-columns:1fr 70px 70px;background:var(--navy);padding:13px 16px;}
+.ctb .ch span{font-size:12px;color:rgba(255,255,255,0.8);font-weight:600;text-align:center;}
+.ctb .ch span:first-child{text-align:left;}
+.ctb .cr{display:grid;grid-template-columns:1fr 70px 70px;padding:12px 16px;border-bottom:1px solid #F5F5F5;align-items:center;}
+.ctb .cr:last-child{border:none;}
+.ctb .cr span:first-child{font-size:13px;color:var(--text);}
+.ctb .cr span:not(:first-child){text-align:center;font-size:16px;}
+.wab{background:linear-gradient(135deg,#075E54,#128C7E);border-radius:20px;padding:24px;text-align:center;margin-bottom:16px;}
+.wab h3{font-size:18px;color:#fff;margin-bottom:6px;}
+.wab p{font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:16px;line-height:1.5;}
+.wab a{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;border-radius:14px;padding:13px 24px;font-size:14px;font-weight:700;}
+/* PIN */
+.pbg{min-height:100vh;background:linear-gradient(160deg,#03045E,#0077B6);display:flex;align-items:center;justify-content:center;padding:20px;}
+.pbox{background:#fff;border-radius:24px;padding:32px 24px;text-align:center;width:100%;max-width:320px;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.pbox h2{font-family:'Playfair Display',serif;font-size:22px;color:var(--text);margin:12px 0 4px;}
+.pbox p{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.pi{width:100%;padding:14px;text-align:center;font-size:28px;letter-spacing:10px;background:#F8FBFF;border:2px solid #E0EEF5;border-radius:14px;color:var(--text);font-family:monospace;outline:none;transition:border-color 0.2s;}
+.pi:focus{border-color:var(--blue);}
+.perr{color:#EF4444;font-size:12px;margin-top:8px;display:none;}
+.psub{width:100%;padding:14px;margin-top:14px;background:var(--blue);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;}
+/* DASHBOARD */
+.dw{background:#EEF4FF;min-height:100vh;padding-bottom:30px;}
+.dt{background:linear-gradient(135deg,#03045E,#0077B6);padding:48px 20px 28px;}
+.dt h1{font-family:'Playfair Display',serif;font-size:24px;color:#fff;}
+.dt p{font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;}
+.dtr{display:flex;justify-content:space-between;align-items:flex-start;}
+.tp{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:8px 14px;font-size:12px;color:#fff;display:flex;align-items:center;gap:5px;}
+.sg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 20px 0;}
+.sbox{background:#fff;border-radius:14px;padding:14px 8px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.07);}
+.sbox .sn{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;}
+.sbox .sl{font-size:10px;color:var(--muted);margin-top:2px;font-weight:500;}
+.rc{background:#fff;border-radius:18px;margin:12px 20px 0;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,0.06);}
+.rc .rn{font-size:15px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.rc .rcd{font-size:11px;color:var(--muted);font-family:monospace;margin-bottom:12px;}
+.rs{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.rst{background:#F8FBFF;border-radius:10px;padding:10px;text-align:center;}
+.rst .rsn{font-size:22px;font-weight:700;}
+.rst .rsl{font-size:10px;color:var(--muted);}
+.rsay{background:#F0FFF8;border:1px solid #D1FAE5;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:#065F46;font-style:italic;line-height:1.5;}
+/* TOOLKIT */
+.tw{background:#F0F9FF;min-height:100vh;padding:48px 20px 30px;}
+.tw h1{font-family:'Playfair Display',serif;font-size:28px;color:var(--text);margin-bottom:4px;}
+.tw .sub{font-size:14px;color:var(--muted);margin-bottom:24px;}
+.tkc{background:#fff;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:var(--shadow);cursor:pointer;display:flex;align-items:center;gap:16px;transition:transform 0.2s;}
+.tkc:active{transform:scale(0.98);}
+.tki{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.tkt{font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.tkd{font-size:12px;color:var(--muted);line-height:1.4;}
+.tkch{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.tckp{font-size:10px;padding:3px 8px;background:var(--light);color:var(--blue);border-radius:8px;font-weight:500;}
+/* POSTER */
+.pw{background:#F5F0E8;min-height:100vh;}
+.pctrl{background:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,0.06);}
+.pcard{max-width:560px;margin:20px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.12);}
+.ptop{background:linear-gradient(135deg,#03045E,#0077B6,#00B4D8);padding:28px 24px 22px;text-align:center;}
+.pqr{padding:24px;display:flex;gap:20px;align-items:center;background:#FFFCF5;border-bottom:2px dashed #C8D8E8;}
+.pben{display:grid;grid-template-columns:1fr 1fr 1fr;padding:18px 20px;gap:12px;}
+.pbt{text-align:center;}
+.pfoot{background:var(--navy);padding:14px 20px;text-align:center;}
+@media print{.pctrl,.no-print{display:none!important;}.pcard{box-shadow:none;margin:0;border-radius:0;}body{background:#fff;}}
+/* MESSAGES */
+.mw{background:#F0FFF4;min-height:100vh;padding-bottom:30px;}
+.mh{background:linear-gradient(135deg,#075E54,#128C7E);padding:48px 20px 24px;}
+.mh h1{font-family:'Playfair Display',serif;font-size:22px;color:#fff;}
+.mh p{font-size:13px;color:rgba(255,255,255,0.65);margin-top:4px;}
+.msgc{background:#fff;border-radius:18px;margin:12px 20px 0;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.06);}
+.msgch{background:#F0FFF4;padding:13px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #D1FAE5;}
+.msgprev{background:#F8FFFB;padding:14px 16px;font-size:12px;color:#374151;line-height:1.7;white-space:pre-wrap;font-family:monospace;max-height:150px;overflow-y:auto;border-bottom:1px solid #D1FAE5;}
+.msga{display:flex;}
+.msgbtn{flex:1;padding:13px;border:none;font-size:13px;font-weight:600;background:#fff;color:#374151;border-right:1px solid #F0F0F0;transition:background 0.2s;}
+.msgbtn:last-child{border:none;}
+.msgbtn.copied{background:#F0FFF4;color:#065F46;}
+.msgbtn.wa{background:#25D366;color:#fff;}
+.es{text-align:center;padding:60px 20px;color:var(--muted);}
+.es .ei{font-size:60px;margin-bottom:16px;}
+.es h3{font-size:18px;color:var(--text);margin-bottom:8px;}
+/* IMG LOADING */
+.img-placeholder{background:linear-gradient(135deg,#E0EEF5,#C8D8E8);display:flex;align-items:center;justify-content:center;font-size:40px;}
+</style>
+</head>
+<body>
 
+<!-- MAIN -->
+<div id="s-main" class="screen active">
+  <div class="hero">
+    <div class="hero-bg-img">
+      <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1200&q=90&auto=format&fit=crop" alt="Goa beach" onerror="this.parentElement.style.background='linear-gradient(160deg,#03045E,#0077B6)'"/>
+    </div>
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-top">
+      <span class="hero-badge">🌴 Goa's Best Kept Secret</span>
+      <button class="owner-btn" onclick="goPin()">📊 Owner</button>
+    </div>
+    <h1>Goa <em>Hidden</em></h1>
+    <p>Real restaurants & budget stays — by a local kitchen insider. No paid rankings. Ever.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">6+</div><div class="lbl">Restaurants</div></div>
+      <div class="hero-stat"><div class="num">8+</div><div class="lbl">Stays</div></div>
+      <div class="hero-stat"><div class="num">100%</div><div class="lbl">Honest</div></div>
+    </div>
+  </div>
+  <div onclick="goS('s-trust')" style="background:linear-gradient(90deg,#EEF4FF,#E0F0FF);border-bottom:1px solid #C8D8F0;padding:11px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+    <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">👨‍🍳</span><div><div style="font-size:13px;font-weight:600;color:#03045E;">Why trust us over MakeMyTrip?</div><div style="font-size:11px;color:#6B7280;">Kitchen insider tips · Zero paid rankings · +91 74882 72615</div></div></div>
+    <span style="color:#00B4D8;font-size:16px;">→</span>
+  </div>
+  <div class="search-wrap"><div class="search-inner"><span style="font-size:18px;">🔍</span><input id="msearch" placeholder="Search restaurants, stays, areas..." oninput="rAll()"/></div></div>
+  <div class="cat-tabs">
+    <button class="cat-tab active" id="cat-all" onclick="setCat('all')"><span class="ci">🌴</span>All</button>
+    <button class="cat-tab" id="cat-food" onclick="setCat('food')"><span class="ci">🍽️</span>Eat</button>
+    <button class="cat-tab" id="cat-stay" onclick="setCat('stay')"><span class="ci">🏨</span>Stay</button>
+    <button class="cat-tab" id="cat-saved" onclick="setCat('saved')"><span class="ci">🔖</span>Saved</button>
+  </div>
+  <div class="filters" id="afilters"></div>
+  <div class="sec-head"><h2>⭐ Top Picks</h2><span id="rcount"></span></div>
+  <div class="feat-scroll" id="fscroll"></div>
+  <div class="sec-head"><h2 id="ltitle">All Places</h2></div>
+  <div class="cards-list" id="clist"></div>
+  <div style="height:20px;"></div>
+</div>
+
+<!-- TRUST -->
+<div id="s-trust" class="screen">
+  <div class="tbg"><div style="font-size:52px;margin-bottom:12px;">🤝</div><h1>Why Trust Goa Hidden?</h1><p>We're not a travel company. We're a kitchen worker who knows Goa's real scene.</p></div>
+  <div class="pc">
+    <button onclick="goS('s-main')" style="background:none;border:none;color:var(--blue);font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:4px;">← Back</button>
+    <div class="sb"><blockquote>"I work as a kitchen helper in Goa. Every day I see amazing food and great stays being ignored — because tourists trusted a paid app instead. So I built Goa Hidden."</blockquote><p style="font-size:13px;color:#666;line-height:1.7;margin-bottom:14px;">No investor money. No sponsored posts. Just honest recommendations from someone who knows which kitchen is clean, which chef cares, and which ₹500/night stay is actually worth it.</p><div class="fr"><div class="fav">👨‍🍳</div><div><div style="font-size:13px;font-weight:600;">Founder, Goa Hidden</div><div style="font-size:11px;color:#6B7280;">Kitchen worker · Goa local · Your honest guide</div></div></div></div>
+    <div style="font-size:11px;color:#6B7280;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">Why We're Different</div>
+    <div class="dg">
+      <div class="db"><div class="di">👨‍🍳</div><h4>Kitchen Insider</h4><p>Tips from someone inside Goa's kitchens every single day.</p></div>
+      <div class="db"><div class="di">🚫</div><h4>Zero Paid Rankings</h4><p>No restaurant or hotel pays to appear at top.</p></div>
+      <div class="db"><div class="di">🏨</div><h4>Budget Stays</h4><p>Real picks from ₹300/night — not fake "cheap".</p></div>
+      <div class="db"><div class="di">💬</div><h4>WhatsApp Support</h4><p>Message a real Goa local. Not a chatbot.</p></div>
+    </div>
+    <div class="ctb">
+      <div class="ch"><span>Feature</span><span>🌴 Us</span><span>Big Apps</span></div>
+      <div class="cr"><span>Local insider tips</span><span>✅</span><span>❌</span></div>
+      <div class="cr"><span>Zero paid rankings</span><span>✅</span><span>❌</span></div>
+      <div class="cr"><span>Real budget stays</span><span>✅</span><span>❌</span></div>
+      <div class="cr"><span>Exclusive visitor offers</span><span>✅</span><span>❌</span></div>
+      <div class="cr"><span>Direct WhatsApp help</span><span>✅</span><span>❌</span></div>
+    </div>
+    <div class="wab"><h3>Ask Us Anything</h3><p>Not sure where to eat or stay? WhatsApp us. A real Goa local will reply.</p><a href="https://wa.me/917488272615?text=Hi! I found you on Goa Hidden. Can you help me?" target="_blank">💬 WhatsApp: +91 74882 72615</a></div>
+    <p style="text-align:center;color:#6B7280;font-size:13px;font-style:italic;">"We will never accept money to rank a place higher." 🌴</p>
+  </div>
+</div>
+
+<!-- PIN -->
+<div id="s-pin" class="screen">
+  <div class="pbg"><div class="pbox"><div style="font-size:40px;">🔐</div><h2>Owner Access</h2><p>Enter your 4-digit PIN</p><input class="pi" id="piinput" type="password" inputmode="numeric" maxlength="4" placeholder="••••"/><div class="perr" id="pierr">Wrong PIN. Try again.</div><button class="psub" onclick="chkPin()">Enter →</button><button onclick="goS('s-main')" style="background:none;border:none;color:#6B7280;font-size:13px;margin-top:12px;width:100%;">← Back to app</button><div style="font-size:11px;color:#CCC;margin-top:8px;">Demo PIN: 1234</div></div></div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="s-dash" class="screen">
+  <div class="dw">
+    <div class="dt"><div class="dtr"><div><h1>📊 Dashboard</h1><p>Show this to restaurants & stays as proof</p></div><button class="tp" onclick="goS('s-toolkit')">🛠️ Toolkit</button></div><div id="dsummary"></div></div>
+    <div id="dexplain"></div>
+    <div id="dlistings"></div>
+    <button onclick="goS('s-main')" style="margin:16px 20px;width:calc(100% - 40px);padding:14px;background:#fff;border:1.5px solid #E0EEF5;border-radius:14px;color:#6B7280;font-size:14px;">← Back to App</button>
+  </div>
+</div>
+
+<!-- TOOLKIT -->
+<div id="s-toolkit" class="screen">
+  <div class="tw">
+    <button onclick="goS('s-dash')" style="background:none;border:none;color:var(--blue);font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:4px;">← Dashboard</button>
+    <div style="font-size:40px;margin-bottom:8px;">🛠️</div>
+    <h1>Goa Hidden Toolkit</h1><p class="sub">Your private growth tools</p>
+    <div class="tkc" onclick="goS('s-poster')"><div class="tki" style="background:#FFF0EB;">🖨️</div><div style="flex:1;"><div class="tkt">Printable QR Poster</div><div class="tkd">Print & place in restaurants, hostels and beach shacks.</div><div class="tkch"><span class="tckp">Restaurant tables</span><span class="tckp">Hostel boards</span><span class="tckp">Beach shacks</span></div></div><span style="color:var(--blue);font-size:18px;">→</span></div>
+    <div class="tkc" onclick="goS('s-messages')"><div class="tki" style="background:#F0FFF4;">💬</div><div style="flex:1;"><div class="tkt">WhatsApp Messages</div><div class="tkd">5 ready-to-send messages for tourists, hostels & restaurants.</div><div class="tkch"><span class="tckp" style="background:#F0FFF4;color:#22C55E;">Tourist groups</span><span class="tckp" style="background:#F0FFF4;color:#22C55E;">Hostels</span><span class="tckp" style="background:#F0FFF4;color:#22C55E;">Instagram</span></div></div><span style="color:#22C55E;font-size:18px;">→</span></div>
+    <div style="background:#FFF8E7;border:1px solid #FDE68A;border-radius:14px;padding:14px 16px;text-align:center;"><div style="font-size:13px;color:#92400E;line-height:1.7;">💡 <strong>Week 1 Goal:</strong> Print 10 posters + send to 5 tourist WhatsApp groups.</div></div>
+  </div>
+</div>
+
+<!-- POSTER -->
+<div id="s-poster" class="screen">
+  <div class="pw">
+    <div class="pctrl no-print"><button onclick="goS('s-toolkit')" style="background:#EEF4FF;border:none;border-radius:10px;color:var(--blue);padding:8px 14px;font-size:13px;font-weight:600;">← Back</button><div style="flex:1;font-size:13px;color:#6B7280;">🖨️ Print and place everywhere tourists go</div><button onclick="window.print()" style="background:var(--blue);border:none;border-radius:10px;color:#fff;padding:10px 18px;font-size:13px;font-weight:700;">Print Now</button></div>
+    <div class="pcard">
+      <div class="ptop"><div style="font-size:11px;letter-spacing:4px;color:rgba(255,255,255,0.7);text-transform:uppercase;margin-bottom:6px;">✦ Free For Tourists ✦</div><div style="font-size:50px;margin-bottom:4px;">🌴</div><h1 style="font-family:'Playfair Display',serif;font-size:36px;color:#fff;margin-bottom:6px;">Goa Hidden</h1><p style="color:rgba(255,255,255,0.75);font-size:14px;font-style:italic;">Goa's Secret Insider Guide — Food & Budget Stays</p></div>
+      <div class="pqr"><div style="flex-shrink:0;text-align:center;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://minz19.github.io/Goan-bhojan&bgcolor=ffffff&color=03045E&margin=10" alt="QR" width="120" height="120" style="border-radius:10px;border:3px solid var(--blue);display:block;"/><div style="font-size:10px;color:#888;margin-top:5px;letter-spacing:1px;text-transform:uppercase;">Scan to Open</div></div><div><h2 style="font-size:17px;color:#1A1A2E;margin-bottom:8px;font-family:'Playfair Display',serif;">Find hidden restaurants & budget stays in Goa — free!</h2><p style="font-size:12px;color:#555;line-height:1.5;margin-bottom:10px;">By a real Goa kitchen worker. No fake reviews. No paid rankings.</p><div style="display:flex;align-items:center;gap:6px;"><div style="width:8px;height:8px;border-radius:50%;background:#25D366;"></div><span style="font-size:12px;color:#065F46;font-weight:600;">WhatsApp: +91 74882 72615</span></div></div></div>
+      <div class="pben"><div class="pbt"><div style="font-size:26px;margin-bottom:5px;">🎟️</div><div style="font-size:12px;font-weight:700;color:#1A1A2E;margin-bottom:3px;">Free Offers</div><div style="font-size:10px;color:#666;line-height:1.4;">Welcome gifts at every listing</div></div><div class="pbt"><div style="font-size:26px;margin-bottom:5px;">🏨</div><div style="font-size:12px;font-weight:700;color:#1A1A2E;margin-bottom:3px;">Budget Stays</div><div style="font-size:10px;color:#666;line-height:1.4;">Honest picks from ₹300/night</div></div><div class="pbt"><div style="font-size:26px;margin-bottom:5px;">📍</div><div style="font-size:12px;font-weight:700;color:#1A1A2E;margin-bottom:3px;">Directions</div><div style="font-size:10px;color:#666;line-height:1.4;">One tap to navigate anywhere</div></div></div>
+      <div class="pfoot"><div style="font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;">Open in browser</div><div style="font-size:16px;font-weight:700;color:#90E0EF;font-family:monospace;">minz19.github.io/Goan-bhojan</div></div>
+      <div style="padding:10px;background:#FFFCF5;text-align:center;"><div style="font-size:11px;color:#888;font-style:italic;">100% free · No login · Works on all phones 📱</div></div>
+    </div>
+    <div class="no-print" style="margin:16px 20px;background:#EEF4FF;border:1px solid #C8D8F0;border-radius:12px;padding:14px;"><div style="font-size:13px;font-weight:600;color:#03045E;margin-bottom:6px;">💡 Best places for this poster</div><div style="font-size:12px;color:#555;line-height:1.9;">🍽️ Restaurant tables · 🏨 Hostel boards · 🛵 Scooter shops · 🏖️ Beach shacks</div></div>
+  </div>
+</div>
+
+<!-- MESSAGES -->
+<div id="s-messages" class="screen">
+  <div class="mw">
+    <div class="mh"><button onclick="goS('s-toolkit')" style="background:rgba(255,255,255,0.15);border:none;border-radius:10px;color:#fff;padding:7px 14px;font-size:13px;margin-bottom:14px;">← Back</button><h1>💬 Ready-to-Send Messages</h1><p>Copy & paste — no editing needed</p></div>
+    <div style="background:#F0FFF4;border:1px solid #D1FAE5;border-radius:12px;margin:12px 20px 0;padding:12px 14px;font-size:13px;color:#065F46;">📋 Tap <strong>Copy</strong> then paste in WhatsApp. Or tap <strong>WhatsApp</strong> to open directly.</div>
+    <div id="msglist"></div>
+    <div style="background:#FFF8E7;border:1px solid #FDE68A;border-radius:14px;margin:12px 20px 0;padding:14px 16px;"><div style="font-size:13px;font-weight:600;color:#92400E;margin-bottom:8px;">📅 Weekly Plan</div><div style="font-size:12px;color:#78350F;line-height:2;"><strong>Monday</strong> — Send to 3 tourist WhatsApp groups<br/><strong>Wednesday</strong> — Visit 2 hostels<br/><strong>Friday</strong> — Post Instagram caption<br/><strong>Weekend</strong> — Pitch 3 restaurants/stays</div></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal-bg" onclick="closeM()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="meh" id="mehbg">
+      <img id="mimg" src="" alt="" onerror="this.style.display='none';document.getElementById('memoji-fb').style.display='flex';"/>
+      <div id="memoji-fb" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:80px;background:linear-gradient(135deg,#0077B6,#00B4D8);"></div>
+      <div class="grad"></div>
+      <div class="meh-info"><h2 id="mname"></h2></div>
+    </div>
+    <div class="mc">
+      <div class="mb" id="mbadges"></div>
+      <div class="ic"><div class="icl" id="mspeclbl"></div><div class="icv" id="mspec"></div></div>
+      <div class="ic"><div class="icl">💡 Insider Tip</div><div class="icv" id="mtip"></div></div>
+      <div class="cc"><div class="ccl">🎟️ Special Visitor Offer</div><div class="cco" id="moffer"></div><div class="cd" id="mcode">••••••••••</div><button id="mrevbtn" onclick="revCode()" style="background:#0A9396;color:#fff;border:none;border-radius:10px;padding:11px 24px;font-size:14px;font-weight:700;width:100%;">Reveal Code 🎟️</button><div id="mrevmsg" style="font-size:13px;color:#0A9396;font-style:italic;display:none;">✅ Show this to staff when you arrive!</div></div>
+      <div class="mbtns"><button class="btn-blue" onclick="mDir()">📍 Get Directions</button><button class="btn-outline" onclick="closeM()">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<a href="https://wa.me/917488272615?text=Hi! I found you on Goa Hidden. Can you help me?" target="_blank" class="wa-float">💬</a>
+
+<script>
+const PIN="1234";
+
+// Unsplash photo IDs — beautiful, free, relevant
+const PHOTOS = {
+  r1: "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=600&q=80", // Goa seafood
+  r2: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80", // Mediterranean food
+  r3: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80", // Indian curry
+  r4: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=600&q=80", // Beach shack
+  r5: "https://images.unsplash.com/photo-1567337710282-00832b415979?w=600&q=80", // Garden restaurant
+  r6: "https://images.unsplash.com/photo-1600891964092-4316c288032e?w=600&q=80", // Grilled chicken
+  s1: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=600&q=80", // Hostel dorm
+  s2: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80", // Beach hut
+  s3: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80", // Homestay house
+  s4: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80", // Budget hotel
+  s5: "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=600&q=80", // Jungle/nature stay
+  s6: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&q=80", // Coastal cottage
+  s7: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600&q=80", // Hostel beds
+  s8: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80", // Heritage villa
+};
+
+const restaurants=[
+  {id:'r1',type:'food',name:"Fisherman's Wharf",area:"Panaji",cuisine:"Goan Seafood",price:"₹₹",rating:4.7,speciality:"Fresh catch, Goan fish curry rice",image:"🦞",tags:["Seafood","Local Fav","Riverside"],tip:"Ask for the catch of the day — always fresh off the boat!",code:"GH-FW01",offer:"Show code for a free welcome drink",featured:true},
+  {id:'r2',type:'food',name:"Thalassa",area:"Vagator",cuisine:"Greek & Mediterranean",price:"₹₹₹",rating:4.8,speciality:"Mezze platter, Lamb souvlaki",image:"🫒",tags:["Mediterranean","Sunset View","Romantic"],tip:"Book a cliff-side table before sunset — absolutely magical!",code:"GH-TH02",offer:"Show code for complimentary bread basket",featured:true},
+  {id:'r3',type:'food',name:"Vinayak Family",area:"Margao",cuisine:"Authentic Goan",price:"₹",rating:4.6,speciality:"Sorpotel, Bebinca dessert",image:"🍛",tags:["Local","Authentic","Budget"],tip:"Come hungry — portions are huge and home-style!",code:"GH-VF03",offer:"Show code for extra papadom platter",featured:false},
+  {id:'r4',type:'food',name:"Britto's",area:"Baga Beach",cuisine:"Multi-cuisine",price:"₹₹",rating:4.5,speciality:"Prawn Balchão, Fresh Mojitos",image:"🌊",tags:["Beach","Drinks","Tourist Fav"],tip:"Perfect for lazy afternoons with cold drinks and sea breeze.",code:"GH-BR04",offer:"Show code for free starter",featured:true},
+  {id:'r5',type:'food',name:"Gunpowder",area:"Assagao",cuisine:"Kerala & South Indian",price:"₹₹",rating:4.7,speciality:"Pork ribs, Egg roast curry",image:"🌿",tags:["Organic","Garden Dining","Artsy"],tip:"Sit in the garden — the ambiance is worth the visit alone.",code:"GH-GP05",offer:"Show code for free filter coffee",featured:false},
+  {id:'r6',type:'food',name:"Martin's Corner",area:"Betalbatim",cuisine:"Goan & Continental",price:"₹₹",rating:4.8,speciality:"Chicken Cafreal, Prawn Rawa Fry",image:"🍗",tags:["Celebrity Fav","Classic","Must Visit"],tip:"This place has hosted Bollywood stars — it's a Goa legend!",code:"GH-MC06",offer:"Show code for a free lassi",featured:true},
+];
+const stays=[
+  {id:'s1',type:'stay',name:"Papaya's Hostel",area:"Panaji",stayType:"Hostel",price:"₹350/night",rating:4.6,speciality:"Dorm beds & private rooms, rooftop chill area",image:"🛏️",tags:["Hostel","Backpacker","Social"],tip:"Best place to meet other travellers — legendary rooftop parties!",code:"GH-PH01",offer:"Show code for free breakfast on first night",featured:true},
+  {id:'s2',type:'stay',name:"Seashell Beach Hut",area:"Anjuna",stayType:"Beach Hut",price:"₹800/night",rating:4.7,speciality:"Private beach huts, 2 mins walk to sea",image:"🏖️",tags:["Beach Hut","Romantic","Sea View"],tip:"Wake up to the sound of waves — worth every rupee!",code:"GH-SB02",offer:"Show code for free beach umbrella & chairs",featured:true},
+  {id:'s3',type:'stay',name:"Old Goa Homestay",area:"Old Goa",stayType:"Homestay",price:"₹600/night",rating:4.8,speciality:"Traditional Portuguese house, home-cooked breakfast",image:"🏡",tags:["Homestay","Cultural","Authentic"],tip:"The aunty here makes the best Goan prawn curry for breakfast!",code:"GH-OG03",offer:"Show code for home-cooked Goan dinner included",featured:true},
+  {id:'s4',type:'stay',name:"Backpacker Den",area:"Calangute",stayType:"Budget Hotel",price:"₹400/night",rating:4.4,speciality:"Clean AC rooms, near beach & market",image:"🏨",tags:["Budget Hotel","Clean","Central"],tip:"Ask for a room on the top floor — quieter and better views.",code:"GH-BD04",offer:"Show code for free airport pickup",featured:false},
+  {id:'s5',type:'stay',name:"Jungle Nest Hostel",area:"Assagao",stayType:"Hostel",price:"₹450/night",rating:4.5,speciality:"Treehouse dorms, yoga sessions, organic café",image:"🌿",tags:["Hostel","Yoga","Nature"],tip:"The sunrise yoga session here will change your mornings forever!",code:"GH-JN05",offer:"Show code for free yoga class",featured:false},
+  {id:'s6',type:'stay',name:"Fisherman's Cottage",area:"Benaulim",stayType:"Homestay",price:"₹700/night",rating:4.7,speciality:"Fishing village homestay, fresh seafood daily",image:"⛵",tags:["Homestay","Seafood","Quiet"],tip:"The host takes guests fishing at dawn — once in a lifetime!",code:"GH-FC06",offer:"Show code for free sunset boat ride",featured:true},
+  {id:'s7',type:'stay',name:"Baga Beach Bunks",area:"Baga Beach",stayType:"Hostel",price:"₹300/night",rating:4.3,speciality:"Cheapest clean beds near Baga, locker storage",image:"🎒",tags:["Hostel","Cheapest","Beach Access"],tip:"Best value in Baga — clean, safe, 5 min walk to beach.",code:"GH-BB07",offer:"Show code for free welcome drink at Britto's",featured:false},
+  {id:'s8',type:'stay',name:"Heritage Villa",area:"Fontainhas",stayType:"Budget Hotel",price:"₹900/night",rating:4.9,speciality:"Colonial Portuguese villa, art district location",image:"🎨",tags:["Heritage","Art District","Unique"],tip:"Walk the painted streets of Fontainhas at golden hour — unreal!",code:"GH-HV08",offer:"Show code for free heritage walking tour",featured:true},
+];
+const all=[...restaurants,...stays];
+const areas=["All","Panaji","Vagator","Margao","Baga Beach","Assagao","Betalbatim","Anjuna","Old Goa","Calangute","Benaulim","Fontainhas"];
+const msgs=[
+  {id:1,icon:"✈️",label:"Tourist Groups",sub:"For Facebook/WhatsApp tourist groups",msg:"🌴 *GOA HIDDEN — Free Insider Guide*\n\nHey everyone!\n\nFree guide with honest restaurants & budget stays from a real Goa kitchen worker.\n\n✅ Hidden restaurants with insider tips\n✅ Budget stays from ₹300/night\n✅ Exclusive free offers everywhere\n✅ Zero paid rankings — ever\n\n📱 https://minz19.github.io/Goan-bhojan\n💬 WhatsApp: +91 74882 72615\n\nEat well, sleep cheap, love Goa! 🌴"},
+  {id:2,icon:"🏨",label:"Hostel Reception",sub:"Send to hostel/hotel reception staff",msg:"Namaste! 🙏\n\nI'm a local kitchen worker in Goa. I made a free guide for tourists — *Goa Hidden*.\n\nIt covers honest restaurant tips AND budget stays including hostels like yours.\n\nWould you share this with guests?\n📱 https://minz19.github.io/Goan-bhojan\n\nCompletely free. No catch.\n💬 WhatsApp: +91 74882 72615\n\nThank you! 🌴"},
+  {id:3,icon:"📸",label:"Instagram Caption",sub:"For Instagram posts or Reels",msg:"Goa has thousands of restaurants and hotels. Most tourists end up at overpriced ones. 🙈\n\nI work in a Goa kitchen. I know the real hidden spots — restaurants AND budget stays from ₹300/night.\n\nFree guide. Real tips. No paid rankings. 🌴\n\n🔗 Link in bio — Goa Hidden\n💬 WhatsApp: +91 74882 72615\n\n#Goa #GoaFood #GoaTravel #BudgetGoa #GoaHidden #HiddenGemsGoa #GoaHostel"},
+  {id:4,icon:"🍽️",label:"Restaurant/Stay Pitch",sub:"WhatsApp to restaurant or stay owners",msg:"Namaste! 🙏\n\nMain ek free guide bana raha hoon Goa ke liye — *Goa Hidden*.\n\nIsmein restaurants aur budget stays dono hain.\n\nAapka listing FREE mein add karna chahta hoon pehle 2 mahine ke liye.\n\n📱 Guide: https://minz19.github.io/Goan-bhojan\n\nThank you! 🌴"},
+  {id:5,icon:"📝",label:"Travel Bloggers",sub:"For travel bloggers & influencers",msg:"Hi! 👋\n\nI'm a kitchen worker in Goa who built a free insider guide — *Goa Hidden*. Honest restaurants AND budget stays. Zero sponsored content.\n\nWould you share it?\n\n📱 https://minz19.github.io/Goan-bhojan\n💬 WhatsApp: +91 74882 72615\n\nThanks! 🌴"},
+];
+
+let st={cat:'all',area:'All',search:'',saved:[],cur:null};
+let stats={};
+function ldS(){try{stats=JSON.parse(localStorage.getItem('gh-stats')||'{}');}catch{stats={};}}
+function svS(){try{localStorage.setItem('gh-stats',JSON.stringify(stats));}catch{}}
+function rec(id,t){if(!stats[id])stats[id]={views:0,directions:0,codeShows:0};stats[id][t]=(stats[id][t]||0)+1;svS();}
+
+function goS(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);if(id==='s-dash')rDash();if(id==='s-messages')rMsgs();}
+function goPin(){goS('s-pin');document.getElementById('piinput').value='';document.getElementById('pierr').style.display='none';}
+function chkPin(){if(document.getElementById('piinput').value===PIN){goS('s-dash');}else{document.getElementById('pierr').style.display='block';}}
+
+function setCat(c){st.cat=c;document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));document.getElementById('cat-'+c).classList.add('active');rAll();}
+function setArea(a){st.area=a;rFilters();rAll();}
+function rFilters(){document.getElementById('afilters').innerHTML=areas.map(a=>`<button class="chip ${st.area===a?'active':''}" onclick="setArea('${a}')">${a}</button>`).join('');}
+
+function getFilt(){
+  const q=st.search.toLowerCase();
+  return all.filter(r=>{
+    if(st.cat==='food'&&r.type!=='food')return false;
+    if(st.cat==='stay'&&r.type!=='stay')return false;
+    if(st.cat==='saved'&&!st.saved.includes(r.id))return false;
+    if(st.area!=='All'&&r.area!==st.area)return false;
+    return r.name.toLowerCase().includes(q)||(r.cuisine||r.stayType||'').toLowerCase().includes(q)||r.tags.some(t=>t.toLowerCase().includes(q));
+  });
+}
+
+function imgEl(id,cls,h){
+  const p=PHOTOS[id];
+  return `<img src="${p}" alt="" class="${cls}" style="width:100%;height:${h}px;object-fit:cover;" onerror="this.parentElement.style.background='linear-gradient(135deg,#0077B6,#00B4D8)';this.style.display='none';"/>`;
+}
+
+function rAll(){
+  const list=getFilt();
+  const feat=list.filter(r=>r.featured);
+  document.getElementById('rcount').textContent=list.length+' found';
+  const fs=document.getElementById('fscroll');
+  if(feat.length===0){fs.style.display='none';}
+  else{
+    fs.style.display='flex';
+    fs.innerHTML=feat.map(r=>`
+      <div class="feat-card" onclick="openM('${r.id}')">
+        <div class="feat-img">
+          ${imgEl(r.id,'',160)}
+          <div class="grad"></div>
+          <div class="type-badge" style="color:${r.type==='stay'?'#0077B6':'#FF6B35'}">${r.type==='stay'?'🏨 Stay':'🍽️ Food'}</div>
+          <div class="fi-info">
+            <h3>${r.name}</h3>
+            <div class="fi-meta">📍 ${r.area} · ${r.price} · ⭐ ${r.rating}</div>
+          </div>
+        </div>
+        <div class="feat-body">
+          <div class="feat-tip">${r.tip}</div>
+          <div class="feat-row">
+            <span class="rating">⭐ ${r.rating}</span>
+            <span style="font-size:11px;background:${r.type==='stay'?'#E8F8FF':'#FFF0EB'};color:${r.type==='stay'?'#0077B6':'#FF6B35'};padding:3px 8px;border-radius:8px;font-weight:600;">${r.price}</span>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+  const cl=document.getElementById('clist');
+  if(list.length===0){cl.innerHTML='<div class="es"><div class="ei">🌴</div><h3>Nothing found</h3><p>Try a different search or filter</p></div>';return;}
+  cl.innerHTML=list.map(r=>`
+    <div class="list-card" onclick="openM('${r.id}')">
+      <div class="lc-img">
+        ${imgEl(r.id,'',110)}
+        <div class="lc-type">${r.type==='stay'?'🏨 Stay':'🍽️ Food'}</div>
+      </div>
+      <div class="lc-body">
+        <h3>${r.name}</h3>
+        <div class="lc-meta">📍 ${r.area} · ${r.type==='food'?r.cuisine:r.stayType} · ${r.price} · ⭐ ${r.rating}</div>
+        <div class="tags">${r.tags.map(t=>`<span class="tag ${r.type==='stay'?'tag-stay':'tag-food'}">${t}</span>`).join('')}</div>
+      </div>
+      <div class="lc-actions">
+        <button onclick="togSave(event,'${r.id}')" style="background:none;border:none;font-size:20px;filter:${st.saved.includes(r.id)?'none':'grayscale(1) opacity(0.4)'};">🔖</button>
+        <button onclick="qDir(event,'${r.id}')" style="background:#E0F4FF;border:none;border-radius:10px;padding:6px 8px;font-size:11px;color:#0077B6;font-weight:600;">📍</button>
+      </div>
+    </div>`).join('');
+}
+
+function togSave(e,id){e.stopPropagation();st.saved=st.saved.includes(id)?st.saved.filter(s=>s!==id):[...st.saved,id];rAll();}
+function qDir(e,id){e.stopPropagation();const r=all.find(x=>x.id===id);rec(id,'directions');window.open(`https://maps.google.com/?q=${encodeURIComponent(r.name+' '+r.area+' Goa')}`,'_blank');}
+
+function openM(id){
+  const r=all.find(x=>x.id===id);st.cur=r;rec(id,'views');
+  // Set photo in modal
+  const img=document.getElementById('mimg');
+  const fb=document.getElementById('memoji-fb');
+  img.src=PHOTOS[r.id]||'';
+  img.style.display='block';
+  fb.style.display='none';
+  fb.textContent=r.image;
+  document.getElementById('mname').textContent=r.name;
+  document.getElementById('mbadges').innerHTML=`<span class="rating">⭐ ${r.rating}</span><span style="font-size:13px;color:#6B7280;">📍 ${r.area}</span><span class="price-badge">${r.price}</span><span style="font-size:12px;background:${r.type==='stay'?'#E8F8FF':'#FFF0EB'};color:${r.type==='stay'?'#0077B6':'#FF6B35'};padding:3px 8px;border-radius:8px;font-weight:500;">${r.type==='stay'?'🏨 Stay':'🍽️ Food'}</span>`;
+  document.getElementById('mspeclbl').textContent=r.type==='stay'?'🏨 What You Get':'🍽️ Must Try';
+  document.getElementById('mspec').textContent=r.speciality;
+  document.getElementById('mtip').textContent='💡 '+r.tip;
+  document.getElementById('moffer').textContent=r.offer;
+  document.getElementById('mcode').textContent='••••••••••';
+  document.getElementById('mrevbtn').style.display='block';
+  document.getElementById('mrevmsg').style.display='none';
+  document.getElementById('modal').classList.add('open');
+}
+function closeM(){document.getElementById('modal').classList.remove('open');}
+function revCode(){const r=st.cur;rec(r.id,'codeShows');document.getElementById('mcode').textContent=r.code;document.getElementById('mrevbtn').style.display='none';document.getElementById('mrevmsg').style.display='block';}
+function mDir(){const r=st.cur;rec(r.id,'directions');window.open(`https://maps.google.com/?q=${encodeURIComponent(r.name+' '+r.area+' Goa')}`,'_blank');}
+
+function rDash(){
+  const tc=all.reduce((a,r)=>a+(stats[r.id]?.codeShows||0),0);
+  const td=all.reduce((a,r)=>a+(stats[r.id]?.directions||0),0);
+  const tv=all.reduce((a,r)=>a+(stats[r.id]?.views||0),0);
+  const total=tc+td+tv;
+
+  // Big summary banner
+  document.getElementById('dsummary').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 20px 0;">
+      <div style="background:#fff;border-radius:14px;padding:14px 8px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.07);">
+        <div style="font-size:20px;">👁️</div>
+        <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#22C55E;margin:4px 0 2px;">${tv}</div>
+        <div style="font-size:10px;color:#6B7280;font-weight:500;">Total Views</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:14px 8px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.07);">
+        <div style="font-size:20px;">📍</div>
+        <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#FF6B35;margin:4px 0 2px;">${td}</div>
+        <div style="font-size:10px;color:#6B7280;font-weight:500;">Direction Clicks</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:14px 8px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.07);">
+        <div style="font-size:20px;">🎟️</div>
+        <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#0077B6;margin:4px 0 2px;">${tc}</div>
+        <div style="font-size:10px;color:#6B7280;font-weight:500;">Code Reveals</div>
+      </div>
+    </div>`;
+
+  // What each means
+  document.getElementById('dexplain').innerHTML=`
+    <div style="background:#fff;border-radius:16px;padding:16px;margin:12px 20px 0;box-shadow:0 4px 14px rgba(0,0,0,0.06);">
+      <div style="font-size:12px;font-weight:700;color:#03045E;margin-bottom:12px;">📖 What These Numbers Mean</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:36px;height:36px;background:#F0FFF4;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👁️</div>
+          <div><div style="font-size:13px;font-weight:600;color:#1A1A2E;margin-bottom:2px;">Views — ${tv}</div><div style="font-size:12px;color:#6B7280;line-height:1.5;">Someone opened your restaurant or stay page. They were interested!</div></div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:36px;height:36px;background:#FFF0EB;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📍</div>
+          <div><div style="font-size:13px;font-weight:600;color:#1A1A2E;margin-bottom:2px;">Direction Clicks — ${td}</div><div style="font-size:12px;color:#6B7280;line-height:1.5;">Someone tapped "Get Directions." They were planning to actually visit!</div></div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:36px;height:36px;background:#E8FFFB;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎟️</div>
+          <div><div style="font-size:13px;font-weight:600;color:#1A1A2E;margin-bottom:2px;">Code Reveals — ${tc} <span style="color:#0A9396;font-size:11px;">← Strongest proof!</span></div><div style="font-size:12px;color:#6B7280;line-height:1.5;">Someone revealed the code & walked in to claim the offer. Show this to owners!</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:16px 20px 4px;font-size:11px;color:#6B7280;letter-spacing:2px;text-transform:uppercase;margin-top:8px;">Per Listing Breakdown</div>`;
+
+  // Per listing — all 3 stats
+  document.getElementById('dlistings').innerHTML=all.map(r=>{
+    const s=stats[r.id]||{};
+    const codes=s.codeShows||0;
+    const dirs=s.directions||0;
+    const views=s.views||0;
+    const activity=codes+dirs+views;
+    const pct=total>0?Math.round((activity/total)*100):0;
+    return`<div class="rc">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div class="rn">${r.image} ${r.name}</div>
+        <span style="font-size:11px;background:${r.type==='stay'?'#E8F8FF':'#FFF0EB'};color:${r.type==='stay'?'#0077B6':'#FF6B35'};padding:2px 8px;border-radius:6px;font-weight:600;">${r.type==='stay'?'Stay':'Food'}</span>
+      </div>
+      <div class="rcd" style="margin-bottom:10px;">📍 ${r.area} · Code: <strong style="color:#03045E;">${r.code}</strong></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+        <div style="background:#F0FFF4;border:1px solid ${views>0?'#86EFAC':'#E8E8E8'};border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#22C55E;">${views}</div>
+          <div style="font-size:10px;color:#6B7280;margin-top:2px;">👁️ Views</div>
+        </div>
+        <div style="background:#FFF8F5;border:1px solid ${dirs>0?'#FCA5A5':'#E8E8E8'};border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#FF6B35;">${dirs}</div>
+          <div style="font-size:10px;color:#6B7280;margin-top:2px;">📍 Clicks</div>
+        </div>
+        <div style="background:#F0FFFB;border:1px solid ${codes>0?'#6EE7B7':'#E8E8E8'};border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#0A9396;">${codes}</div>
+          <div style="font-size:10px;color:#6B7280;margin-top:2px;">🎟️ Reveals</div>
+        </div>
+      </div>
+      <div style="background:#F0F4FF;border-radius:8px;height:6px;overflow:hidden;margin-bottom:8px;">
+        <div style="background:linear-gradient(90deg,#0077B6,#00B4D8);height:100%;width:${pct}%;border-radius:6px;"></div>
+      </div>
+      <div style="font-size:11px;color:#AAA;text-align:right;margin-bottom:6px;">${pct}% of total app activity</div>
+      ${codes>0?`<div class="rsay">💬 Say to owner: "Sir, ${codes} tourist${codes>1?'s':''} revealed the code for your ${r.type==='stay'?'stay':'restaurant'} this month. They came because of my app."</div>`:''}
+      ${views>0&&codes===0?`<div style="padding:8px 12px;background:#FFF8E7;border:1px solid #FDE68A;border-radius:8px;font-size:12px;color:#92400E;margin-top:6px;">⏳ ${views} view${views>1?'s':''} so far — keep sharing to get more tourists!</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function rMsgs(){document.getElementById('msglist').innerHTML=msgs.map(m=>`<div class="msgc"><div class="msgch"><span style="font-size:22px;">${m.icon}</span><div><div style="font-size:14px;font-weight:600;color:#065F46;">${m.label}</div><div style="font-size:11px;color:#6EE7B7;">${m.sub}</div></div></div><div class="msgprev">${m.msg}</div><div class="msga"><button class="msgbtn" id="cb${m.id}" onclick="cpMsg(${m.id})">📋 Copy</button><a href="https://wa.me/?text=${encodeURIComponent(m.msg)}" target="_blank" style="flex:1;"><button class="msgbtn wa" style="width:100%;">💬 WhatsApp</button></a></div></div>`).join('');}
+function cpMsg(id){const m=msgs.find(x=>x.id===id);navigator.clipboard.writeText(m.msg).then(()=>{const b=document.getElementById('cb'+id);b.textContent='✅ Copied!';b.classList.add('copied');setTimeout(()=>{b.textContent='📋 Copy';b.classList.remove('copied');},2500);});}
+
+ldS();rFilters();rAll();rMsgs();
+document.getElementById('msearch').addEventListener('input',e=>{st.search=e.target.value;rAll();});
+document.getElementById('piinput').addEventListener('keydown',e=>{if(e.key==='Enter')chkPin();});
+</script>
+</body>
+</html>
