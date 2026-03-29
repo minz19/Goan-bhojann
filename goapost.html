@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoaPost AI — Social Content for Local Businesses</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #F5ECD7; --deep: #1A1208; --spice: #C4521A;
+    --gold: #E8A830; --sea: #2A6B7C; --cream: #FBF6EE; --muted: #8A7A6A;
+    --ig: #E1306C; --fb: #1877F2;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--cream); color: var(--deep); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: radial-gradient(ellipse at 20% 10%, rgba(196,82,26,0.07) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(42,107,124,0.07) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+  .wrap { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; padding: 0 20px 60px; }
+  header { padding: 36px 0 24px; text-align: center; }
+  .logo-mark { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .logo-icon { width: 40px; height: 40px; background: var(--spice); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; transform: rotate(-5deg); box-shadow: 3px 3px 0 var(--deep); }
+  .logo-text { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; }
+  .logo-text span { color: var(--spice); }
+  .tagline { font-size: 13px; color: var(--muted); font-weight: 300; letter-spacing: 0.5px; }
+
+  /* API Banner */
+  .api-banner { background: #FFF8E7; border: 1.5px solid #F0D080; border-radius: 16px; padding: 16px 18px; margin-bottom: 16px; }
+  .api-banner-title { font-size: 13px; font-weight: 600; color: #7A5500; margin-bottom: 4px; }
+  .api-banner p { font-size: 12px; color: #9A7020; margin-bottom: 10px; line-height: 1.5; }
+  .api-banner a { color: var(--spice); font-weight: 600; font-size: 12px; }
+  .api-key-row { display: flex; gap: 8px; }
+  .api-key-row input { flex: 1; padding: 10px 14px; border: 1.5px solid #E0CC90; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; background: white; outline: none; color: var(--deep); margin-bottom: 0; }
+  .api-key-row input:focus { border-color: var(--spice); }
+  .btn-save-key { padding: 10px 14px; background: var(--spice); color: white; border: none; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .key-saved { font-size: 11px; color: #2E7D32; margin-top: 6px; display: none; }
+
+  /* Card */
+  .card { background: white; border-radius: 20px; padding: 28px 24px; border: 1.5px solid rgba(0,0,0,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.06); margin-bottom: 16px; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .card-title .dot { width: 8px; height: 8px; background: var(--spice); border-radius: 50%; flex-shrink: 0; }
+  label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+  input, select, textarea { width: 100%; padding: 13px 16px; border: 1.5px solid #E8E0D5; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--deep); background: var(--cream); outline: none; transition: border-color 0.2s; margin-bottom: 16px; -webkit-appearance: none; }
+  input:focus, select:focus, textarea:focus { border-color: var(--spice); background: white; }
+  textarea { resize: none; height: 80px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .chip { padding: 8px 16px; border-radius: 999px; border: 1.5px solid #E8E0D5; font-size: 13px; font-weight: 500; cursor: pointer; background: var(--cream); color: var(--muted); user-select: none; }
+  .chip.active { background: var(--deep); border-color: var(--deep); color: white; }
+  .tone-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+  .tone-btn { padding: 10px 12px; border-radius: 12px; border: 1.5px solid #E8E0D5; font-size: 13px; font-weight: 500; cursor: pointer; background: var(--cream); color: var(--muted); text-align: center; }
+  .tone-btn.active { background: var(--sea); border-color: var(--sea); color: white; }
+  .btn-generate { width: 100%; padding: 16px; background: var(--spice); color: white; border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; cursor: pointer; box-shadow: 0 4px 0 #8B3A12; transition: all 0.15s; }
+  .btn-generate:active { transform: translateY(3px); box-shadow: 0 1px 0 #8B3A12; }
+  .btn-generate:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+  .btn-inner { display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error-msg { display: none; background: #FFF3F0; border: 1px solid #FFCCBB; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #C4521A; margin-top: 12px; line-height: 1.5; white-space: pre-line; }
+
+  /* Results */
+  .results { display: none; }
+  .week-label { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .section-divider { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+
+  /* Post Card */
+  .post-card { background: white; border-radius: 16px; border: 1.5px solid #E8E0D5; margin-bottom: 16px; overflow: hidden; animation: slideUp 0.4s ease forwards; opacity: 0; transform: translateY(16px); }
+  @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+  .post-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 12px; border-bottom: 1px solid #F0EAE0; }
+  .post-day { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
+  .post-platform { font-size: 11px; padding: 3px 10px; border-radius: 999px; font-weight: 500; }
+  .plat-instagram { background: #FCE4EC; color: #AD1457; }
+  .plat-facebook { background: #E3F2FD; color: #1565C0; }
+  .plat-both { background: #F3E5F5; color: #6A1B9A; }
+  .post-body { padding: 14px 16px 10px; }
+  .post-caption { font-size: 14px; line-height: 1.7; color: var(--deep); white-space: pre-wrap; margin-bottom: 10px; }
+  .post-tags { font-size: 13px; color: var(--sea); font-weight: 500; line-height: 1.6; margin-bottom: 2px; }
+
+  /* Action Buttons - 3 rows */
+  .post-actions { padding: 10px 16px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .action-row { display: flex; gap: 8px; }
+
+  /* Row 1: Copy + WhatsApp */
+  .btn-copy { flex: 1; padding: 10px; border: 1.5px solid #E8E0D5; border-radius: 10px; background: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--deep); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+  .btn-copy.copied { background: #E8F5E9; color: #2E7D32; border-color: #A5D6A7; }
+  .btn-wa { flex: 1; padding: 10px; border: none; border-radius: 10px; background: #25D366; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+  /* Row 2: Instagram + Facebook open */
+  .btn-ig { flex: 1; padding: 10px; border: none; border-radius: 10px; background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+  .btn-fb { flex: 1; padding: 10px; border: none; border-radius: 10px; background: var(--fb); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+  /* Row 3: Save Post Image */
+  .btn-save-img { width: 100%; padding: 10px; border: 1.5px dashed #C4521A; border-radius: 10px; background: #FFF5F0; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--spice); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+  /* Coming Soon Badge */
+  .coming-soon-card { background: white; border-radius: 16px; border: 1.5px dashed #C4521A; padding: 20px; margin-bottom: 16px; text-align: center; }
+  .coming-soon-badge { display: inline-block; background: var(--gold); color: var(--deep); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; letter-spacing: 0.5px; }
+  .coming-soon-card h3 { font-family: 'Playfair Display', serif; font-size: 16px; margin-bottom: 6px; }
+  .coming-soon-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .coming-soon-steps { text-align: left; margin-top: 12px; }
+  .coming-soon-steps li { font-size: 12px; color: var(--muted); margin-bottom: 4px; padding-left: 4px; list-style: none; }
+  .coming-soon-steps li::before { content: '→ '; color: var(--spice); }
+
+  /* Canvas modal for image post */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: white; border-radius: 20px; padding: 24px; width: 100%; max-width: 420px; max-height: 90vh; overflow-y: auto; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+  .modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--muted); }
+  #postCanvas { width: 100%; border-radius: 12px; display: block; margin-bottom: 14px; }
+  .btn-dl-img { width: 100%; padding: 14px; background: var(--spice); color: white; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 8px; }
+  .img-hint { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.5; }
+
+  /* Download all + Footer */
+  .btn-download { width: 100%; padding: 14px; background: var(--deep); color: white; border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-download:active { opacity: 0.8; }
+  .footer-brand { text-align: center; background: white; border-radius: 20px; padding: 24px 20px; border: 1.5px solid #E8E0D5; }
+  .brand-logo { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; color: var(--spice); margin-bottom: 6px; }
+  .footer-brand p { font-size: 13px; color: var(--muted); }
+  .contact-wa { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; background: #25D366; color: white; text-decoration: none; padding: 11px 20px; border-radius: 999px; font-size: 14px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- Image Post Modal -->
+<div class="modal-overlay" id="imgModal">
+  <div class="modal-box">
+    <div class="modal-title">
+      📸 Post Image Card
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <canvas id="postCanvas" width="1080" height="1080"></canvas>
+    <button class="btn-dl-img" onclick="downloadImage()">⬇️ Save Image to Phone</button>
+    <p class="img-hint">Save this image → open Instagram or Facebook → create post → upload this image → done! ✅</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <header>
+    <div class="logo-mark">
+      <div class="logo-icon">🌴</div>
+      <div class="logo-text">Goa<span>Post</span> AI</div>
+    </div>
+    <p class="tagline">7-day social content. Ready in seconds.</p>
+  </header>
+
+  <!-- Groq API Key -->
+  <div class="api-banner">
+    <div class="api-banner-title">🔑 Free Groq API Key Required</div>
+    <p>Get your free key in 2 mins → <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> → Sign up → Create API Key → Paste below</p>
+    <div class="api-key-row">
+      <input type="password" id="groqKey" placeholder="gsk_xxxxxxxxxxxxxxxxxxxx" />
+      <button class="btn-save-key" onclick="saveKey()">Save</button>
+    </div>
+    <div class="key-saved" id="keySaved">✅ Key saved!</div>
+  </div>
+
+  <!-- Business Form -->
+  <div class="card">
+    <div class="card-title"><span class="dot"></span> Your Business Details</div>
+    <label>Business Name</label>
+    <input type="text" id="bizName" placeholder="e.g. Sunset Shack, Casa Bella" />
+    <label>Business Type</label>
+    <select id="bizType">
+      <option value="">Select type...</option>
+      <option value="restaurant">Restaurant / Cafe / Shack</option>
+      <option value="hotel">Hotel / Villa / Stay</option>
+      <option value="tour">Tour / Activity / Experience</option>
+      <option value="shop">Retail Shop / Boutique</option>
+      <option value="spa">Spa / Salon / Wellness</option>
+      <option value="bar">Bar / Nightlife</option>
+      <option value="other">Other</option>
+    </select>
+    <label>What to promote this week?</label>
+    <textarea id="promo" placeholder="e.g. New seafood thali ₹199, weekend special, monsoon discount..."></textarea>
+    <label>Post for</label>
+    <div class="chips">
+      <div class="chip active" data-plat="Instagram">📸 Instagram</div>
+      <div class="chip" data-plat="Facebook">👍 Facebook</div>
+      <div class="chip" data-plat="Both">✨ Both</div>
+    </div>
+    <label>Content Tone</label>
+    <div class="tone-grid">
+      <div class="tone-btn active" data-tone="Friendly & Warm">😊 Friendly</div>
+      <div class="tone-btn" data-tone="Exciting & Energetic">🔥 Exciting</div>
+      <div class="tone-btn" data-tone="Luxury & Premium">💎 Premium</div>
+      <div class="tone-btn" data-tone="Funny & Playful">😄 Playful</div>
+    </div>
+    <button class="btn-generate" id="genBtn" onclick="generateContent()">
+      <div class="btn-inner">
+        <div class="spinner" id="spinner"></div>
+        <span id="btnText">✨ Generate 7 Days of Posts</span>
+      </div>
+    </button>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+    <div class="week-label">📅 Your Week of Content</div>
+    <div class="section-divider">3 ways to post each day 👇</div>
+    <div id="postsContainer"></div>
+
+    <!-- Coming Soon: Direct API Posting -->
+    <div class="coming-soon-card">
+      <div class="coming-soon-badge">🚀 COMING SOON</div>
+      <h3>One-Tap Direct Posting</h3>
+      <p>Post directly to Instagram & Facebook without opening the app. This needs a Facebook Developer account — takes 3–5 days to set up.</p>
+      <ul class="coming-soon-steps">
+        <li>Create Facebook Developer App at developers.facebook.com</li>
+        <li>Get Instagram Graph API access approved</li>
+        <li>Host this app on Vercel with your FB App credentials</li>
+        <li>One-tap post button becomes fully active</li>
+      </ul>
+    </div>
+
+    <button class="btn-download" onclick="downloadAllPosts()">⬇️ Download All 7 Posts as Text</button>
+
+    <div class="footer-brand">
+      <div class="brand-logo">🌴 GoaPost AI</div>
+      <p>Helping Goa businesses grow on social media</p>
+      <p style="margin-top:4px">Want weekly posts done for you?</p>
+      <a class="contact-wa" href="https://wa.me/91XXXXXXXXXX?text=Hi%2C%20I%20want%20GoaPost%20AI%20for%20my%20business" target="_blank">
+        💬 WhatsApp Us — ₹1500/month
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  let selectedPlatform = 'Instagram';
+  let selectedTone = 'Friendly & Warm';
+  let generatedPosts = [];
+  let currentPostData = null;
+  let currentBizName = '';
+
+  window.onload = () => {
+    const saved = localStorage.getItem('groq_key');
+    if (saved) { document.getElementById('groqKey').value = saved; document.getElementById('keySaved').style.display = 'block'; }
+  };
+
+  function saveKey() {
+    const key = document.getElementById('groqKey').value.trim();
+    if (key) { localStorage.setItem('groq_key', key); document.getElementById('keySaved').style.display = 'block'; }
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      selectedPlatform = chip.dataset.plat;
+    });
+  });
+
+  document.querySelectorAll('.tone-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedTone = btn.dataset.tone;
+    });
+  });
+
+  async function generateContent() {
+    const bizName = document.getElementById('bizName').value.trim();
+    const bizType = document.getElementById('bizType').value;
+    const promo = document.getElementById('promo').value.trim();
+    const apiKey = document.getElementById('groqKey').value.trim();
+
+    if (!apiKey) { showError('Please enter your free Groq API key first.\nGet it at: console.groq.com/keys'); return; }
+    if (!bizName || !bizType || !promo) { showError('Please fill in all business details.'); return; }
+
+    currentBizName = bizName;
+    const btn = document.getElementById('genBtn');
+    const spinner = document.getElementById('spinner');
+    const btnText = document.getElementById('btnText');
+    btn.disabled = true; spinner.style.display = 'block'; btnText.textContent = 'Creating your content...';
+    document.getElementById('errorMsg').style.display = 'none';
+    document.getElementById('results').style.display = 'none';
+
+    const prompt = `You are a social media expert for local businesses in Goa, India.
+Create 7 days of posts for:
+- Business: ${bizName}
+- Type: ${bizType}
+- Promotion: ${promo}
+- Platform: ${selectedPlatform}
+- Tone: ${selectedTone}
+Respond ONLY with a valid JSON array of 7 objects, no markdown.
+Each: {"day":"Monday","caption":"2-3 sentences with emojis, local Goan feel","hashtags":"#goa #goafood ...8-10 tags"}`;
+
+    try {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile', max_tokens: 1500, temperature: 0.8,
+          messages: [
+            { role: 'system', content: 'You are a Goa social media expert. Respond only with valid JSON arrays, no markdown.' },
+            { role: 'user', content: prompt }
+          ]
+        })
+      });
+      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error?.message || 'API error ' + res.status); }
+      const data = await res.json();
+      const text = data.choices[0].message.content.replace(/```json|```/g, '').trim();
+      renderPosts(JSON.parse(text));
+    } catch (err) {
+      if (err.message.includes('401')) showError('Invalid API key. Check your Groq key.');
+      else if (err.message.includes('429')) showError('Rate limit hit. Wait 1 minute and try again.');
+      else showError('Error: ' + (err.message || 'Something went wrong.'));
+    } finally {
+      btn.disabled = false; spinner.style.display = 'none'; btnText.textContent = '✨ Generate 7 Days of Posts';
+    }
+  }
+
+  function renderPosts(posts) {
+    generatedPosts = posts;
+    const container = document.getElementById('postsContainer');
+    container.innerHTML = '';
+    const platClass = { 'Instagram': 'plat-instagram', 'Facebook': 'plat-facebook', 'Both': 'plat-both' };
+
+    posts.forEach((post, i) => {
+      const card = document.createElement('div');
+      card.className = 'post-card';
+      card.style.animationDelay = i * 0.08 + 's';
+      const fullText = post.caption + '\n\n' + post.hashtags;
+      const encodedText = encodeURIComponent(fullText);
+      const idx = i;
+
+      card.innerHTML = `
+        <div class="post-header">
+          <span class="post-day">${post.day}</span>
+          <span class="post-platform ${platClass[selectedPlatform] || 'plat-instagram'}">${selectedPlatform}</span>
+        </div>
+        <div class="post-body">
+          <div class="post-caption">${post.caption}</div>
+          <div class="post-tags">${post.hashtags}</div>
+        </div>
+        <div class="post-actions">
+          <div class="action-row">
+            <button class="btn-copy" onclick="copyPost(this, ${JSON.stringify(fullText)})">📋 Copy Text</button>
+            <button class="btn-wa" onclick="shareWA(${JSON.stringify(fullText)})">💬 WhatsApp</button>
+          </div>
+          <div class="action-row">
+            <button class="btn-ig" onclick="openIG(${JSON.stringify(fullText)})">📸 Open Instagram</button>
+            <button class="btn-fb" onclick="openFB(${JSON.stringify(fullText)})">👍 Open Facebook</button>
+          </div>
+          <div class="action-row">
+            <button class="btn-save-img" onclick="generatePostImage(${idx})">🖼️ Save as Post Image (1080×1080)</button>
+          </div>
+        </div>`;
+      container.appendChild(card);
+    });
+
+    document.getElementById('results').style.display = 'block';
+    setTimeout(() => document.getElementById('results').scrollIntoView({ behavior: 'smooth' }), 100);
+  }
+
+  /* ── Copy ── */
+  function copyPost(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✅ Copied!'; btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '📋 Copy Text'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  /* ── WhatsApp ── */
+  function shareWA(text) { window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank'); }
+
+  /* ── Social Open: simple, reliable ── */
+  function openIG(text) { showSheet(text, 'Instagram'); }
+  function openFB(text) { showSheet(text, 'Facebook'); }
+
+  function showSheet(text, platform) {
+    const old = document.getElementById('sp');
+    if (old) old.remove();
+
+    const isIG = platform === 'Instagram';
+    const appUrl = isIG ? 'instagram://camera' : 'fb://composer';
+    const webUrl = isIG ? 'https://www.instagram.com' : 'https://www.facebook.com';
+    const bgBtn = isIG
+      ? 'linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)'
+      : '#1877F2';
+    const step2 = isIG
+      ? 'Tap + → New Post → pick photo → paste caption'
+      : 'Tap "What\'s on your mind?" → paste caption → add photo';
+
+    // Try copy
+    try { navigator.clipboard.writeText(text); } catch(e) {}
+
+    const overlay = document.createElement('div');
+    overlay.id = 'sp';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:flex-end;justify-content:center;';
+
+    const sheet = document.createElement('div');
+    sheet.style.cssText = 'background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:24px 20px 36px;';
+
+    sheet.innerHTML =
+      '<div style="width:40px;height:4px;background:#ddd;border-radius:4px;margin:0 auto 18px"></div>' +
+      '<div style="font-size:18px;font-weight:700;margin-bottom:4px">' + (isIG ? '📸' : '👍') + ' Post to ' + platform + '</div>' +
+      '<div style="font-size:12px;color:#888;margin-bottom:14px">Caption copied — just paste when you get there</div>' +
+      '<div style="background:#FBF6EE;border:1.5px solid #E8E0D5;border-radius:10px;padding:12px;font-size:13px;line-height:1.6;max-height:100px;overflow-y:auto;margin-bottom:14px;white-space:pre-wrap;word-break:break-word" id="sp-cap"></div>' +
+      '<div style="background:#F0F8FF;border-radius:10px;padding:12px 14px;margin-bottom:16px">' +
+        '<div style="font-size:11px;color:#5A7A8A;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Steps</div>' +
+        '<div style="font-size:13px;color:#1A1208;margin-bottom:5px">① Open ' + platform + ' using button below</div>' +
+        '<div style="font-size:13px;color:#1A1208;margin-bottom:5px">② ' + step2 + '</div>' +
+        '<div style="font-size:13px;color:#1A1208">③ Long-press → Paste → Share 🎉</div>' +
+      '</div>' +
+      '<a id="sp-app" href="' + webUrl + '" target="_blank" style="display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:600;color:#fff;cursor:pointer;margin-bottom:8px;background:' + bgBtn + ';text-align:center;text-decoration:none;box-sizing:border-box">' +
+        (isIG ? '📸 Open Instagram' : '👍 Open Facebook') +
+      '</a>' +
+      '<button id="sp-web" style="width:100%;padding:12px;border:1.5px solid #ddd;border-radius:12px;font-size:14px;font-weight:500;color:#333;background:#f9f9f9;cursor:pointer;margin-bottom:8px">📋 Copy Caption Again</button>' +
+      '<button id="sp-close" style="width:100%;padding:10px;border:none;background:none;font-size:13px;color:#999;cursor:pointer">✕ Close</button>';
+
+    overlay.appendChild(sheet);
+    document.body.appendChild(overlay);
+
+    // Set caption safely
+    document.getElementById('sp-cap').textContent = text;
+
+    // sp-app is now a direct <a> tag, no JS needed
+    document.getElementById('sp-web').addEventListener('click', function() {
+      navigator.clipboard.writeText(text).catch(()=>{});
+      this.textContent = '✅ Copied!';
+      setTimeout(() => { this.textContent = '📋 Copy Caption Again'; }, 2000);
+    });
+    document.getElementById('sp-close').addEventListener('click', function() {
+      overlay.remove();
+    });
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) overlay.remove();
+    });
+  }
+
+  /* ── Generate 1080x1080 Post Image ── */
+  function generatePostImage(idx) {
+    const post = generatedPosts[idx];
+    const bizName = currentBizName || document.getElementById('bizName').value.trim();
+    currentPostData = { post, bizName };
+
+    const canvas = document.getElementById('postCanvas');
+    const ctx = canvas.getContext('2d');
+    const W = 1080, H = 1080;
+    canvas.width = W; canvas.height = H;
+
+    // Background gradient - warm Goa sunset
+    const grad = ctx.createLinearGradient(0, 0, W, H);
+    grad.addColorStop(0, '#2A1A0A');
+    grad.addColorStop(0.5, '#6B2D0E');
+    grad.addColorStop(1, '#1A3040');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Decorative circles
+    ctx.beginPath();
+    ctx.arc(W * 0.85, H * 0.15, 220, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(232,168,48,0.12)';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(W * 0.15, H * 0.85, 180, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(42,107,124,0.15)';
+    ctx.fill();
+
+    // Top bar
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    ctx.fillRect(0, 0, W, 100);
+
+    // Business name top left
+    ctx.fillStyle = '#E8A830';
+    ctx.font = 'bold 36px serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('🌴 ' + bizName.toUpperCase(), 60, 65);
+
+    // Day badge
+    ctx.fillStyle = '#C4521A';
+    ctx.beginPath();
+    ctx.roundRect(W - 220, 24, 160, 52, 26);
+    ctx.fill();
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 24px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(post.day, W - 140, 57);
+
+    // Caption text (word wrap)
+    ctx.fillStyle = 'white';
+    ctx.font = '42px serif';
+    ctx.textAlign = 'left';
+    const lines = wrapText(ctx, post.caption, 60, W - 120, 54);
+    let y = 200;
+    lines.forEach(line => { ctx.fillText(line, 60, y); y += 68; });
+
+    // Divider
+    ctx.strokeStyle = 'rgba(232,168,48,0.5)';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(60, y + 20); ctx.lineTo(W - 60, y + 20); ctx.stroke();
+    y += 60;
+
+    // Hashtags
+    ctx.fillStyle = '#7BBFCC';
+    ctx.font = '32px sans-serif';
+    const tagLines = wrapText(ctx, post.hashtags, 60, W - 120, 34);
+    tagLines.slice(0, 3).forEach(line => { ctx.fillText(line, 60, y); y += 48; });
+
+    // Bottom bar
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.fillRect(0, H - 80, W, 80);
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.font = '26px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('GoaPost AI — goapost.ai', W / 2, H - 28);
+
+    // Show modal
+    // Scale canvas display
+    const modal = document.getElementById('imgModal');
+    modal.classList.add('open');
+
+    // Scale canvas to fit modal
+    const displayW = Math.min(420, window.innerWidth - 80);
+    canvas.style.width = displayW + 'px';
+    canvas.style.height = displayW + 'px';
+  }
+
+  function wrapText(ctx, text, x, maxWidth, fontSize) {
+    const words = text.split(' ');
+    const lines = [];
+    let current = '';
+    words.forEach(word => {
+      const test = current ? current + ' ' + word : word;
+      if (ctx.measureText(test).width > maxWidth && current) {
+        lines.push(current);
+        current = word;
+      } else { current = test; }
+    });
+    if (current) lines.push(current);
+    return lines;
+  }
+
+  function closeModal() { document.getElementById('imgModal').classList.remove('open'); }
+
+  function downloadImage() {
+    const canvas = document.getElementById('postCanvas');
+    const bizName = currentBizName || 'post';
+    const day = currentPostData?.post?.day || 'post';
+    const a = document.createElement('a');
+    a.download = bizName.replace(/\s+/g, '-') + '-' + day + '.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  }
+
+  /* ── Download all as text ── */
+  function downloadAllPosts() {
+    if (!generatedPosts.length) return;
+    const bizName = document.getElementById('bizName').value.trim();
+    let content = `GOAPOST AI — 7-DAY SOCIAL MEDIA CONTENT\nBusiness: ${bizName}\nPlatform: ${selectedPlatform} | Tone: ${selectedTone}\nGenerated: ${new Date().toLocaleDateString('en-IN')}\n${'='.repeat(50)}\n\n`;
+    generatedPosts.forEach(post => {
+      content += `📅 ${post.day.toUpperCase()}\n${'-'.repeat(30)}\n${post.caption}\n\n${post.hashtags}\n\n${'='.repeat(50)}\n\n`;
+    });
+    content += `\nPowered by GoaPost AI\nwa.me/91XXXXXXXXXX\n`;
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([content], { type: 'text/plain' }));
+    a.download = bizName.replace(/\s+/g, '-') + '-posts.txt';
+    a.click();
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorMsg');
+    el.textContent = msg; el.style.display = 'block';
+  }
+</script>
+</body>
+</html>
